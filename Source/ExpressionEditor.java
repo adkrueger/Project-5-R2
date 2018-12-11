@@ -1,5 +1,6 @@
 import javafx.application.Application;
 import javafx.event.EventHandler;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.BorderPane;
@@ -10,6 +11,9 @@ import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
 public class ExpressionEditor extends Application {
+
+	private static Node _label;
+
 	public static void main (String[] args) {
 		launch(args);
 	}
@@ -19,7 +23,7 @@ public class ExpressionEditor extends Application {
 	 */
 	private static class MouseEventHandler implements EventHandler<MouseEvent> {
 		MouseEventHandler (Pane pane_, CompoundExpression rootExpression_) {
-
+			_label = rootExpression_.getNode();
 		}
 		double _startSceneX = 0;
 		double _startSceneY = 0;
@@ -28,13 +32,12 @@ public class ExpressionEditor extends Application {
 				_startSceneX = event.getSceneX();
 				_startSceneY = event.getSceneY();
 			}
-			/*
 			if (event.getEventType() == MouseEvent.MOUSE_DRAGGED) {
 				double posX = event.getSceneX();
 				double posY = event.getSceneY();
 				posX -= _startSceneX;
 				posY -= _startSceneY;
-				_label.setTranslateX(posX;
+				_label.setTranslateX(posX);
 				_label.setTranslateY(posY);
 			}
 			if (event.getEventType() == MouseEvent.MOUSE_RELEASED) {
@@ -43,7 +46,6 @@ public class ExpressionEditor extends Application {
 				_label.setTranslateX(0);
 				_label.setTranslateY(0);
 			}
-			*/
 		}
 	}
 

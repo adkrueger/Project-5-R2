@@ -1,27 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="098ad5a1-0907-4ff9-adbc-a5457ae2fbf3" name="Default Changelist" comment="Initialized project">
-      <change afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/JUnit + Maven/hamcrest-core-1.3.jar" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/JUnit + Maven/junit-4.12.jar" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/Project-5-R2.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/Project-5-R2.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/hamcrest_core_1_3.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/hamcrest_core_1_3.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/junit_4_12.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/junit_4_12.xml" afterDir="false" />
+    <list default="true" id="098ad5a1-0907-4ff9-adbc-a5457ae2fbf3" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Out/production/Project-5-R2/ExpressionEditor$1.class" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/Out/production/Project-5-R2/ExpressionEditor$MouseEventHandler.class" beforeDir="false" afterPath="$PROJECT_DIR$/Out/production/Project-5-R2/ExpressionEditor$MouseEventHandler.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Out/production/Project-5-R2/ExpressionEditor.class" beforeDir="false" afterPath="$PROJECT_DIR$/Out/production/Project-5-R2/ExpressionEditor.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Out/test/Project-5-R2/ExpressionParserPartialTester.class" beforeDir="false" afterPath="$PROJECT_DIR$/Out/test/Project-5-R2/ExpressionParserPartialTester.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/AdditionExpression.java" beforeDir="false" afterPath="$PROJECT_DIR$/Source/AdditionExpression.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/CompoundExpressionImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/Source/CompoundExpressionImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Out/production/Project-5-R2/ExpressionParseException.class" beforeDir="false" afterPath="$PROJECT_DIR$/Out/production/Project-5-R2/ExpressionParseException.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/ExpressionEditor.java" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ExpressionEditor.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/ExpressionParseException.java" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ExpressionParseException.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/MultiplicationExpression.java" beforeDir="false" afterPath="$PROJECT_DIR$/Source/MultiplicationExpression.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/ParenExpression.java" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ParenExpression.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/SimpleExpressionImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/Source/SimpleExpressionImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/SimpleExpressionParser.java" beforeDir="false" afterPath="$PROJECT_DIR$/Source/SimpleExpressionParser.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Test/ExpressionParserPartialTester.java" beforeDir="false" afterPath="$PROJECT_DIR$/Test/ExpressionParserPartialTester.java" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -34,10 +19,14 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Source/ExpressionEditor.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="374">
-              <caret line="45" column="14" lean-forward="true" selection-start-line="45" selection-start-column="14" selection-end-line="45" selection-end-column="14" />
+            <state relative-caret-position="306">
+              <caret line="96" column="67" lean-forward="true" selection-start-line="96" selection-start-column="67" selection-end-line="96" selection-end-column="67" />
               <folding>
                 <element signature="imports" expanded="true" />
+                <element signature="e#688#689#0" expanded="true" />
+                <element signature="e#707#708#0" expanded="true" />
+                <element signature="e#760#761#0" expanded="true" />
+                <element signature="e#792#793#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -244,7 +233,7 @@
     <property name="Repository.Attach.Sources" value="false" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1544473741663" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1544496198142" />
     <property name="last_opened_file_path" value="$USER_HOME$/Downloads" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
@@ -307,7 +296,7 @@
       <workItem from="1544294940617" duration="3152000" />
       <workItem from="1544464561699" duration="4078000" />
       <workItem from="1544468714612" duration="3808000" />
-      <workItem from="1544481127887" duration="1511000" />
+      <workItem from="1544481127887" duration="2147000" />
     </task>
     <task id="LOCAL-00001" summary="Initialized project">
       <created>1544297551728</created>
@@ -316,7 +305,14 @@
       <option name="project" value="LOCAL" />
       <updated>1544297551728</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Prob broke stuff">
+      <created>1544492007160</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1544492007160</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -337,7 +333,7 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="12924000" />
+    <option name="totallyTimeSpent" value="13560000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="-7" width="1550" height="838" extended-state="6" />
@@ -416,7 +412,8 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Initialized project" />
-    <option name="LAST_COMMIT_MESSAGE" value="Initialized project" />
+    <MESSAGE value="Prob broke stuff" />
+    <option name="LAST_COMMIT_MESSAGE" value="Prob broke stuff" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/.idea/workspace.xml">
@@ -547,10 +544,14 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Source/ExpressionEditor.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="374">
-          <caret line="45" column="14" lean-forward="true" selection-start-line="45" selection-start-column="14" selection-end-line="45" selection-end-column="14" />
+        <state relative-caret-position="306">
+          <caret line="96" column="67" lean-forward="true" selection-start-line="96" selection-start-column="67" selection-end-line="96" selection-end-column="67" />
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="e#688#689#0" expanded="true" />
+            <element signature="e#707#708#0" expanded="true" />
+            <element signature="e#760#761#0" expanded="true" />
+            <element signature="e#792#793#0" expanded="true" />
           </folding>
         </state>
       </provider>
