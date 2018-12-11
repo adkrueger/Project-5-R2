@@ -152,4 +152,15 @@ abstract class CompoundExpressionImpl extends SimpleExpressionImpl implements Co
             stringBuilder.append('\t');
         }
     }
+
+    public Expression getChildByPos(double x, double y) {
+        for(Expression expression : _expressions) {
+            Node label = expression.getNode();
+            if(label.contains(label.sceneToLocal(x, y))) {
+                System.out.println("found");
+                return expression;
+            }
+        }
+        return null;
+    }
 }

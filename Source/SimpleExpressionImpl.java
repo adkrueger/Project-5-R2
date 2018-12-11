@@ -74,6 +74,18 @@ public class SimpleExpressionImpl implements Expression {
     public void flatten() {
     }
 
+    public Expression getChildByPos(double x, double y) {
+        if(label.contains(label.parentToLocal(x, y)))
+        {
+            label.setBorder(RED_BORDER);
+            return this;
+        }
+        else
+        {
+            return null;
+        }
+    }
+
     /**
      * Creates a String representation by recursively printing out (using indentation) the
      * tree represented by this expression, starting at the specified indentation level.

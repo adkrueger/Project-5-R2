@@ -56,6 +56,8 @@ interface Expression {
 	 */
 	void flatten ();
 
+	Expression getChildByPos(double x, double y);
+
 	/**
 	 * Creates a String representation by recursively printing out (using indentation) the
 	 * tree represented by this expression, starting at the specified indentation level.
