@@ -1,8 +1,11 @@
 import javafx.scene.Node;
+import javafx.scene.control.Label;
 
 public class SimpleExpressionImpl implements Expression {
 
     private String _contents;
+    private Label label;
+    private CompoundExpression _parent;
 
     /**
      * constructor that takes the contents of the expression
@@ -12,6 +15,8 @@ public class SimpleExpressionImpl implements Expression {
      */
     SimpleExpressionImpl(String contents) {
         _contents = contents;
+        label = new Label(contents);
+
     }
 
     /**
@@ -20,8 +25,7 @@ public class SimpleExpressionImpl implements Expression {
      * @return the expression's parent
      */
     public CompoundExpression getParent() {
-        //TODO: implement me!
-        return null;
+        return _parent;
     }
 
     /**
@@ -30,7 +34,7 @@ public class SimpleExpressionImpl implements Expression {
      * @param parent the CompoundExpression that should be the parent of the target object
      */
     public void setParent(CompoundExpression parent) {
-        //TODO: implement me!
+        _parent = parent;
     }
 
     /**
@@ -57,8 +61,7 @@ public class SimpleExpressionImpl implements Expression {
      * @return the JavaFX node associated with this expression.
      */
     public Node getNode() {
-        //TODO: implement me!
-        return null;
+        return label;
     }
 
     /**

@@ -73,17 +73,16 @@ public class SimpleExpressionParser implements ExpressionParser {
      * string matches X, or null if it matches neither
      */
     private static Expression parseE(String str) {
-        // A or X
-        Expression A = parseA(str);
-        if (A != null) {
-            return A;
-        }
+        return expHelper(str, parseA(str), SimpleExpressionParser::parseX);
+    }
 
-        Expression X = parseX(str);
-        if (X != null) {
-            return X;
+    private static Expression expHelper(String str, Expression exp, Function<String, Expression> fn)
+    {
+        if(exp != null) {
+            return exp;
         }
-        return null;
+        exp = fn.apply(str);
+        return exp; // Doesn't matter if it's null or not, it's all we have
     }
 
     /**
@@ -96,14 +95,7 @@ public class SimpleExpressionParser implements ExpressionParser {
     private static Expression parseM(String str) {
         // M * M or X
         Expression exp = parseHelper(str, '*', SimpleExpressionParser::parseM, SimpleExpressionParser::parseM);
-        if (exp != null) {
-            return exp;
-        }
-        Expression X = parseX(str);
-        if (X != null) {
-            return X;
-        }
-        return null;
+        return expHelper(str, exp, SimpleExpressionParser::parseX);
     }
 
     /**
@@ -116,14 +108,7 @@ public class SimpleExpressionParser implements ExpressionParser {
     private static Expression parseA(String str) {
         // A + M or M
         Expression exp = parseHelper(str, '+', SimpleExpressionParser::parseA, SimpleExpressionParser::parseM);
-        if (exp != null) {
-            return exp;
-        }
-        Expression M = parseM(str);
-        if (M != null) {
-            return M;
-        }
-        return null;
+        return expHelper(str, exp, SimpleExpressionParser::parseM);
     }
 
     /**
@@ -144,11 +129,7 @@ public class SimpleExpressionParser implements ExpressionParser {
                 return opExpr;
             }
         }
-        Expression L = parseL(str);
-        if (L != null) {
-            return L;
-        }
-        return null;
+        return expHelper(str, null, SimpleExpressionParser::parseL);
     }
 
     /**

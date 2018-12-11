@@ -1,4 +1,4 @@
-public class MultiplicationExpression extends CompoundExpressionImpl {
+class MultiplicationExpression extends CompoundExpressionImpl {
     /**
      * The constructor for the CompoundExpressionImpl
      *
@@ -8,18 +8,7 @@ public class MultiplicationExpression extends CompoundExpressionImpl {
         super(contents);
     }
 
-    /**
-     * Creates and returns a deep copy of the expression.
-     * The entire tree rooted at the target node is copied, i.e.,
-     * the copied Expression is as deep as possible.
-     *
-     * @return the deep copy
-     */
-    public Expression deepCopy() {
-        CompoundExpressionImpl expression = new MultiplicationExpression(getContents());
-        for (Expression e : getExpressions()) {
-            expression.addSubexpression(e.deepCopy());
-        }
-        return expression;
+    void createHBox() {
+        hBoxHelper(getContents());
     }
 }

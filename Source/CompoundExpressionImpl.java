@@ -1,9 +1,14 @@
+import javafx.scene.Node;
+import javafx.scene.control.Label;
+import javafx.scene.layout.HBox;
+
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class CompoundExpressionImpl extends SimpleExpressionImpl implements CompoundExpression {
+abstract class CompoundExpressionImpl extends SimpleExpressionImpl implements CompoundExpression {
 
     private List<Expression> _expressions = new ArrayList<>();
+    final HBox hbox = new HBox();
 
     /**
      * The constructor for the CompoundExpressionImpl
@@ -23,12 +28,14 @@ public abstract class CompoundExpressionImpl extends SimpleExpressionImpl implem
         return _expressions;
     }
 
+
     /**
      * Adds the specified expression as a child.
      *
      * @param subexpression the child expression to add
      */
     public void addSubexpression(Expression subexpression) {
+        subexpression.setParent(this);
         _expressions.add(subexpression);
     }
 
@@ -53,6 +60,13 @@ public abstract class CompoundExpressionImpl extends SimpleExpressionImpl implem
     }
 
     /**
+     * Gets the JavaFX Node
+     */
+    public Node getNode() {
+        return hbox;
+    }
+
+    /**
      * Recursively flattens the expression as much as possible
      * throughout the entire tree. Specifically, in every multiplicative
      * or additive expression x whose first or last
@@ -70,7 +84,23 @@ public abstract class CompoundExpressionImpl extends SimpleExpressionImpl implem
             }
         }
         _expressions = expressions;
+        createHBox();
     }
+
+    abstract void createHBox(); // Must be implemented by other classes
+
+    void hBoxHelper(String str) {
+        int i = getExpressions().size();
+        for(Expression expression : getExpressions())
+        {
+            hbox.getChildren().add(expression.getNode());
+            i--;
+            if(i > 0) {
+                hbox.getChildren().add(new Label(str));
+            }
+        }
+    }
+
 
     /**
      * Checks whether a expression is * or + and matches the
@@ -117,7 +147,7 @@ public abstract class CompoundExpressionImpl extends SimpleExpressionImpl implem
      * @param stringBuilder the StringBuilder to which to append tab characters.
      * @param indentLevel   the number of tabs to append.
      */
-    public void indent(StringBuilder stringBuilder, int indentLevel) {
+    private void indent(StringBuilder stringBuilder, int indentLevel) {
         for (int i = 0; i < indentLevel; i++) {
             stringBuilder.append('\t');
         }

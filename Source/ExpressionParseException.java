@@ -1,5 +1,5 @@
 class ExpressionParseException extends Exception {
-	public ExpressionParseException (String message) {
+	ExpressionParseException (String message) {
 		super(message);
 	}
 }

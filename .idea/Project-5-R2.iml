@@ -5,10 +5,11 @@
     <content url="file://$MODULE_DIR$">
       <sourceFolder url="file://$MODULE_DIR$/Source" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Test" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/JUnit + Maven" type="java-test-resource" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="junit-4.12" level="project" />
     <orderEntry type="library" name="hamcrest-core-1.3" level="project" />
+    <orderEntry type="library" name="junit-4.12" level="project" />
   </component>
 </module>

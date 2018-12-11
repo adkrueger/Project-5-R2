@@ -1,20 +1,12 @@
 import javafx.application.Application;
-import java.util.*;
-import javafx.geometry.Point2D;
-import javafx.scene.control.Label;
-import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.event.EventType;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
-import javafx.event.EventHandler;
-import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
 public class ExpressionEditor extends Application {
@@ -27,13 +19,31 @@ public class ExpressionEditor extends Application {
 	 */
 	private static class MouseEventHandler implements EventHandler<MouseEvent> {
 		MouseEventHandler (Pane pane_, CompoundExpression rootExpression_) {
-		}
 
+		}
+		double _startSceneX = 0;
+		double _startSceneY = 0;
 		public void handle (MouseEvent event) {
 			if (event.getEventType() == MouseEvent.MOUSE_PRESSED) {
-			} else if (event.getEventType() == MouseEvent.MOUSE_DRAGGED) {
-			} else if (event.getEventType() == MouseEvent.MOUSE_RELEASED) {
+				_startSceneX = event.getSceneX();
+				_startSceneY = event.getSceneY();
 			}
+			/*
+			if (event.getEventType() == MouseEvent.MOUSE_DRAGGED) {
+				double posX = event.getSceneX();
+				double posY = event.getSceneY();
+				posX -= _startSceneX;
+				posY -= _startSceneY;
+				_label.setTranslateX(posX;
+				_label.setTranslateY(posY);
+			}
+			if (event.getEventType() == MouseEvent.MOUSE_RELEASED) {
+				_label.setLayoutX(_label.getLayoutX() + _label.getTranslateX());
+				_label.setLayoutY(_label.getLayoutY() + _label.getTranslateY());
+				_label.setTranslateX(0);
+				_label.setTranslateY(0);
+			}
+			*/
 		}
 	}
 
@@ -65,30 +75,29 @@ public class ExpressionEditor extends Application {
 		final Pane expressionPane = new Pane();
 
 		// Add the callback to handle when the Parse button is pressed	
-		button.setOnMouseClicked(new EventHandler<MouseEvent>() {
-			public void handle (MouseEvent e) {
-				// Try to parse the expression
-				try {
-					// Success! Add the expression's Node to the expressionPane
-					final Expression expression = expressionParser.parse(textField.getText(), true);
-					System.out.println(expression.convertToString(0));
-					expressionPane.getChildren().clear();
-					expressionPane.getChildren().add(expression.getNode());
-					expression.getNode().setLayoutX(WINDOW_WIDTH/4);
-					expression.getNode().setLayoutY(WINDOW_HEIGHT/2);
+		button.setOnMouseClicked(e -> {
+			// Try to parse the expression
+			try {
+				// Success! Add the expression's Node to the expressionPane
+				final Expression expression = expressionParser.parse(textField.getText(), true);
+				System.out.println(expression.convertToString(0));
+				expressionPane.getChildren().clear();
+				expressionPane.getChildren().add(expression.getNode());
+				System.out.println("called 2");
+				expression.getNode().setLayoutX(WINDOW_WIDTH/4.0);
+				expression.getNode().setLayoutY(WINDOW_HEIGHT/2.0);
 
-					// If the parsed expression is a CompoundExpression, then register some callbacks
-					if (expression instanceof CompoundExpression) {
-						((Pane) expression.getNode()).setBorder(Expression.NO_BORDER);
-						final MouseEventHandler eventHandler = new MouseEventHandler(expressionPane, (CompoundExpression) expression);
-						expressionPane.setOnMousePressed(eventHandler);
-						expressionPane.setOnMouseDragged(eventHandler);
-						expressionPane.setOnMouseReleased(eventHandler);
-					}
-				} catch (ExpressionParseException epe) {
-					// If we can't parse the expression, then mark it in red
-					textField.setStyle("-fx-text-fill: red");
+				// If the parsed expression is a CompoundExpression, then register some callbacks
+				if (expression instanceof CompoundExpression) {
+					((Pane) expression.getNode()).setBorder(Expression.NO_BORDER);
+					final MouseEventHandler eventHandler = new MouseEventHandler(expressionPane, (CompoundExpression) expression);
+					expressionPane.setOnMousePressed(eventHandler);
+					expressionPane.setOnMouseDragged(eventHandler);
+					expressionPane.setOnMouseReleased(eventHandler);
 				}
+			} catch (ExpressionParseException epe) {
+				// If we can't parse the expression, then mark it in red
+				textField.setStyle("-fx-text-fill: red");
 			}
 		});
 		queryPane.getChildren().add(button);

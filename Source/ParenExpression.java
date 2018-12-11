@@ -1,4 +1,6 @@
-public class ParenExpression extends CompoundExpressionImpl {
+import javafx.scene.control.Label;
+
+class ParenExpression extends CompoundExpressionImpl {
     /**
      * The constructor for the CompoundExpressionImpl
      *
@@ -8,18 +10,12 @@ public class ParenExpression extends CompoundExpressionImpl {
         super(contents);
     }
 
-    /**
-     * Creates and returns a deep copy of the expression.
-     * The entire tree rooted at the target node is copied, i.e.,
-     * the copied Expression is as deep as possible.
-     *
-     * @return the deep copy
-     */
-    public Expression deepCopy() {
-        CompoundExpressionImpl expression = new ParenExpression(getContents());
-        for (Expression e : getExpressions()) {
-            expression.addSubexpression(e.deepCopy());
+    void createHBox() {
+        hbox.getChildren().add(new Label("("));
+        for(Expression expression : getExpressions())
+        {
+            hbox.getChildren().add(expression.getNode());
         }
-        return expression;
+        hbox.getChildren().add(new Label(")"));
     }
 }
