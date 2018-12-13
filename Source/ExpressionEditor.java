@@ -25,7 +25,7 @@ public class ExpressionEditor extends Application {
     private static Node _ghostLabel;
     private static Pane _pane;
     private static EventType previousMouse;
-    private static double magicHeight = 32;
+    private static double magicHeight = 0;
 
     private static double _startSceneX = 0;
     private static double _startSceneY = 0;
@@ -78,11 +78,7 @@ public class ExpressionEditor extends Application {
                 }
                 else if(_label != null){
                     _root = _topRoot;
-                    _ghostLabel.setOpacity(1.0f);
-                    _label.setBorder(Expression.NO_BORDER);
-                    _label.setText("");
-                    _label.setTranslateX(0);
-                    _label.setTranslateY(0);
+                    cleanUp();
                     previousMouse = event.getEventType();
                 }
             }
@@ -94,7 +90,7 @@ public class ExpressionEditor extends Application {
      */
     private static void mouseClicked() {
         if(_ghostLabel != null) {
-            _ghostLabel.setOpacity(1.0f);
+            cleanUp();
             _ghostLabel = null;
         }
         _root = _root.getChildByPos(_startSceneX, _startSceneY);
@@ -108,6 +104,14 @@ public class ExpressionEditor extends Application {
         else {
             _root = _topRoot;
         }
+    }
+
+    private static void cleanUp() {
+        _ghostLabel.setOpacity(1.0f);
+        _label.setBorder(Expression.NO_BORDER);
+        _label.setText("");
+        _label.setTranslateX(0);
+        _label.setTranslateY(0);
     }
 
     private static void generateOptions() {

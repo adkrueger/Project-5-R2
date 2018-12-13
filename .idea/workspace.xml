@@ -3,15 +3,11 @@
   <component name="ChangeListManager">
     <list default="true" id="098ad5a1-0907-4ff9-adbc-a5457ae2fbf3" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/AdditionExpression.java" beforeDir="false" afterPath="$PROJECT_DIR$/Source/AdditionExpression.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/CompoundExpression.java" beforeDir="false" afterPath="$PROJECT_DIR$/Source/CompoundExpression.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/CompoundExpressionImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/Source/CompoundExpressionImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/Expression.java" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Expression.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Out/production/Project-5-R2/CompoundExpression.class" beforeDir="false" afterPath="$PROJECT_DIR$/Out/production/Project-5-R2/CompoundExpression.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Out/production/Project-5-R2/Expression.class" beforeDir="false" afterPath="$PROJECT_DIR$/Out/production/Project-5-R2/Expression.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Out/production/Project-5-R2/ExpressionEditor$MouseEventHandler.class" beforeDir="false" afterPath="$PROJECT_DIR$/Out/production/Project-5-R2/ExpressionEditor$MouseEventHandler.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Out/production/Project-5-R2/ExpressionEditor.class" beforeDir="false" afterPath="$PROJECT_DIR$/Out/production/Project-5-R2/ExpressionEditor.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/ExpressionEditor.java" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ExpressionEditor.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/MultiplicationExpression.java" beforeDir="false" afterPath="$PROJECT_DIR$/Source/MultiplicationExpression.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/ParenExpression.java" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ParenExpression.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/SimpleExpressionImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/Source/SimpleExpressionImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/SimpleExpressionParser.java" beforeDir="false" afterPath="$PROJECT_DIR$/Source/SimpleExpressionParser.java" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -24,8 +20,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Source/ExpressionEditor.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="158">
-              <caret line="79" column="37" lean-forward="true" selection-start-line="79" selection-start-column="37" selection-end-line="79" selection-end-column="37" />
+            <state relative-caret-position="220">
+              <caret line="83" column="13" lean-forward="true" selection-start-line="83" selection-start-column="13" selection-end-line="83" selection-end-column="13" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#880#881#0" expanded="true" />
@@ -274,7 +270,7 @@
     <property name="Repository.Attach.Sources" value="false" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1544665544255" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1544665711354" />
     <property name="last_opened_file_path" value="$USER_HOME$/Downloads" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
@@ -339,7 +335,7 @@
       <workItem from="1544464561699" duration="4078000" />
       <workItem from="1544468714612" duration="3808000" />
       <workItem from="1544481127887" duration="10744000" />
-      <workItem from="1544631874798" duration="29641000" />
+      <workItem from="1544631874798" duration="29808000" />
     </task>
     <task id="LOCAL-00001" summary="Initialized project">
       <created>1544297551728</created>
@@ -369,7 +365,14 @@
       <option name="project" value="LOCAL" />
       <updated>1544504735949</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="testing magic number">
+      <created>1544665560669</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1544665560669</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -390,7 +393,7 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="51798000" />
+    <option name="totallyTimeSpent" value="51965000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="-7" width="1550" height="838" extended-state="6" />
@@ -472,7 +475,8 @@
     <MESSAGE value="Prob broke stuff" />
     <MESSAGE value="Added memes" />
     <MESSAGE value="added more dank memes" />
-    <option name="LAST_COMMIT_MESSAGE" value="added more dank memes" />
+    <MESSAGE value="testing magic number" />
+    <option name="LAST_COMMIT_MESSAGE" value="testing magic number" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/.idea/workspace.xml">
@@ -640,8 +644,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Source/ExpressionEditor.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="158">
-          <caret line="79" column="37" lean-forward="true" selection-start-line="79" selection-start-column="37" selection-end-line="79" selection-end-column="37" />
+        <state relative-caret-position="220">
+          <caret line="83" column="13" lean-forward="true" selection-start-line="83" selection-start-column="13" selection-end-line="83" selection-end-column="13" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#880#881#0" expanded="true" />
