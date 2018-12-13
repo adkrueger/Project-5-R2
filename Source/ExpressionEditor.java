@@ -25,7 +25,6 @@ public class ExpressionEditor extends Application {
     private static Node _ghostLabel;
     private static Pane _pane;
     private static EventType previousMouse;
-    private static double magicHeight = 0;
 
     private static double _startSceneX = 0;
     private static double _startSceneY = 0;
@@ -57,7 +56,7 @@ public class ExpressionEditor extends Application {
                 double posX = event.getSceneX();
                 double posY = event.getSceneY();
                 posX -= _ghostLabel.sceneToLocal(_startSceneX, _startSceneY).getX();
-                posY -= _ghostLabel.sceneToLocal(_startSceneX, _startSceneY).getY() + magicHeight;
+                posY -= _ghostLabel.sceneToLocal(_startSceneX, _startSceneY).getY() + 1.5 * _label.getHeight();
                 _label.setTranslateX(posX);
                 _label.setTranslateY(posY);
                 //findClosestNodeTree(_label.getTranslateX());
@@ -71,7 +70,7 @@ public class ExpressionEditor extends Application {
                     if(_ghostLabel != null) {
                         Bounds local = _ghostLabel.localToScene(_ghostLabel.getBoundsInLocal());
                         _label.setTranslateX(local.getMinX());
-                        _label.setTranslateY(local.getMinY() - magicHeight);
+                        _label.setTranslateY(local.getMinY() - 1.5 * _label.getHeight());
                         _label.setBorder(Expression.RED_BORDER);
                         generateOptions();
                     }
