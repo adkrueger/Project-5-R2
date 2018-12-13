@@ -3,9 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="098ad5a1-0907-4ff9-adbc-a5457ae2fbf3" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Out/production/Project-5-R2/ExpressionEditor$MouseEventHandler.class" beforeDir="false" afterPath="$PROJECT_DIR$/Out/production/Project-5-R2/ExpressionEditor$MouseEventHandler.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Out/production/Project-5-R2/ExpressionEditor.class" beforeDir="false" afterPath="$PROJECT_DIR$/Out/production/Project-5-R2/ExpressionEditor.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/ExpressionEditor.java" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ExpressionEditor.java" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -18,8 +15,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Source/ExpressionEditor.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="53">
-              <caret line="53" column="124" lean-forward="true" selection-start-line="53" selection-start-column="124" selection-end-line="53" selection-end-column="124" />
+            <state relative-caret-position="274">
+              <caret line="87" column="5" lean-forward="true" selection-start-line="87" selection-start-column="5" selection-end-line="87" selection-end-column="5" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#880#881#0" expanded="true" />
@@ -268,7 +265,7 @@
     <property name="Repository.Attach.Sources" value="false" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1544667579093" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1544668021534" />
     <property name="last_opened_file_path" value="$USER_HOME$/Downloads" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
@@ -333,7 +330,7 @@
       <workItem from="1544464561699" duration="4078000" />
       <workItem from="1544468714612" duration="3808000" />
       <workItem from="1544481127887" duration="10744000" />
-      <workItem from="1544631874798" duration="31673000" />
+      <workItem from="1544631874798" duration="32115000" />
     </task>
     <task id="LOCAL-00001" summary="Initialized project">
       <created>1544297551728</created>
@@ -384,7 +381,14 @@
       <option name="project" value="LOCAL" />
       <updated>1544665976342</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="dank weebs">
+      <created>1544667595312</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1544667595312</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -405,7 +409,7 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="53830000" />
+    <option name="totallyTimeSpent" value="54272000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="-7" width="1550" height="838" extended-state="6" />
@@ -490,7 +494,8 @@
     <MESSAGE value="testing magic number" />
     <MESSAGE value="testing magic numbers 2" />
     <MESSAGE value="memes and dreams" />
-    <option name="LAST_COMMIT_MESSAGE" value="memes and dreams" />
+    <MESSAGE value="dank weebs" />
+    <option name="LAST_COMMIT_MESSAGE" value="dank weebs" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/.idea/workspace.xml">
@@ -658,8 +663,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Source/ExpressionEditor.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="53">
-          <caret line="53" column="124" lean-forward="true" selection-start-line="53" selection-start-column="124" selection-end-line="53" selection-end-column="124" />
+        <state relative-caret-position="274">
+          <caret line="87" column="5" lean-forward="true" selection-start-line="87" selection-start-column="5" selection-end-line="87" selection-end-column="5" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#880#881#0" expanded="true" />
