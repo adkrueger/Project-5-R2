@@ -1,6 +1,5 @@
 import javafx.application.Application;
 import javafx.geometry.Bounds;
-import javafx.geometry.Point2D;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.event.EventHandler;
@@ -21,6 +20,7 @@ public class ExpressionEditor extends Application {
     private static Expression _topRoot;
     private static Expression _root;
     private static ArrayList<Expression> _nodes = new ArrayList<>();
+    private static ArrayList<Double> closeValues = new ArrayList<>();
     private static Label _label;
     private static Node _ghostLabel;
     private static Pane _pane;
@@ -56,32 +56,35 @@ public class ExpressionEditor extends Application {
                 double posX = event.getSceneX();
                 double posY = event.getSceneY();
                 posX -= _ghostLabel.sceneToLocal(_startSceneX, _startSceneY).getX();
-                posY -= _ghostLabel.sceneToLocal(_startSceneX, _startSceneY).getY() + 1.5 * _label.getHeight();
+                posY -= _ghostLabel.sceneToLocal(_startSceneX, _startSceneY).getY() + _ghostLabel.getLayoutBounds().getHeight() * 1.5;
                 _label.setTranslateX(posX);
                 _label.setTranslateY(posY);
-                //findClosestNodeTree(_label.getTranslateX());
+                findClosestNodeTree(_label.getTranslateX());
                 previousMouse = event.getEventType();
             } else if (event.getEventType() == MouseEvent.MOUSE_RELEASED) {
-                if(previousMouse == MouseEvent.MOUSE_PRESSED)
-                {
+                if(previousMouse == MouseEvent.MOUSE_PRESSED) {
                     _startSceneX = event.getSceneX();
                     _startSceneY = event.getSceneY();
                     mouseClicked();
                     if(_ghostLabel != null) {
                         Bounds local = _ghostLabel.localToScene(_ghostLabel.getBoundsInLocal());
                         _label.setTranslateX(local.getMinX());
-                        _label.setTranslateY(local.getMinY() - 1.5 * _label.getHeight());
+                        _label.setTranslateY(local.getMinY() - _ghostLabel.getLayoutBounds().getHeight() * 1.5);
                         _label.setBorder(Expression.RED_BORDER);
                         generateOptions();
                     }
                 }
-                else if(_label != null){
+                else if(_label != null) {
                     _root = _topRoot;
                     cleanUp();
                     previousMouse = event.getEventType();
                 }
             }
         }
+    }
+
+    private static void findClosestNodeTree(double posX) {
+
     }
 
     /*
@@ -121,7 +124,6 @@ public class ExpressionEditor extends Application {
             _nodes.add(tempNode);
         }
     }
-
 
     /**
      * Size of the GUI
