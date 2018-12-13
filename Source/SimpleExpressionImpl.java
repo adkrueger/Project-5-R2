@@ -44,6 +44,10 @@ public class SimpleExpressionImpl implements Expression {
         return _contents;
     }
 
+    public String expToText() {
+        return getContents();
+    }
+
     /**
      * Creates and returns a deep copy of the expression.
      * The entire tree rooted at the target node is copied, i.e.,
@@ -65,23 +69,28 @@ public class SimpleExpressionImpl implements Expression {
     }
 
     /**
+     * TODO: FIX
+     *
+     * @param node the node
+     */
+    public void setNode(Node node) {
+        label = (Label) node;
+    }
+
+    /**
      * Recursively flattens the expression as much as possible
      * throughout the entire tree. Specifically, in every multiplicative
      * or additive expression x whose first or last
      * child c is of the same type as x, the children of c will be added to x, and
      * c itself will be removed. This method modifies the expression itself.
      */
-    public void flatten() {
-    }
+    public void flatten() {}
 
     public Expression getChildByPos(double x, double y) {
-        if(label.contains(label.parentToLocal(x, y)))
-        {
+        if(label.contains(label.parentToLocal(x, y))) {
             label.setBorder(RED_BORDER);
             return this;
-        }
-        else
-        {
+        } else {
             return null;
         }
     }

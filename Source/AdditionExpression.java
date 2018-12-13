@@ -9,7 +9,13 @@ class AdditionExpression extends CompoundExpressionImpl {
         super(contents);
     }
 
-    void createHBox() {
+    CompoundExpression deepCopyHelper() {
+        return new AdditionExpression(getContents());
+    }
+
+    public void createHBox() {
         hBoxHelper(getContents());
     }
+
+
 }

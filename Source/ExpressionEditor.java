@@ -1,29 +1,35 @@
 import javafx.application.Application;
+import javafx.geometry.Bounds;
+import javafx.geometry.Point2D;
+import javafx.scene.control.Label;
+import javafx.scene.input.MouseEvent;
 import javafx.event.EventHandler;
 import javafx.event.EventType;
 import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Region;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import java.util.ArrayList;
+import java.util.Collections;
 
 public class ExpressionEditor extends Application {
 
     private static Expression _topRoot;
     private static Expression _root;
-    private static Node _label;
+    private static ArrayList<Expression> _nodes = new ArrayList<>();
+    private static Label _label;
     private static Node _ghostLabel;
-    private static EventType previousMouse;
     private static Pane _pane;
+    private static EventType previousMouse;
+    private static double magicHeight = 32;
 
     private static double _startSceneX = 0;
     private static double _startSceneY = 0;
+    private static boolean canDrag = false;
 
     public static void main(String[] args) {
         launch(args);
@@ -33,45 +39,48 @@ public class ExpressionEditor extends Application {
      * Mouse event handler for the entire pane that constitutes the ExpressionEditor
      */
     private static class MouseEventHandler implements EventHandler<MouseEvent> {
-        MouseEventHandler(Pane pane_, CompoundExpression rootExpression_) {
-            _pane = pane_;
+        MouseEventHandler(Pane pane, CompoundExpression rootExpression_) {
+            _pane = pane;
             _topRoot = rootExpression_;
             _root = rootExpression_;
+            _label = new Label("Ready to begin!");
+            _pane.getChildren().add(_label);
         }
 
         public void handle(MouseEvent event) {
-            System.out.println(event.getEventType().toString());
             if (event.getEventType() == MouseEvent.MOUSE_PRESSED) {
                 _startSceneX = event.getSceneX();
                 _startSceneY = event.getSceneY();
                 previousMouse = event.getEventType();
-            } else if (event.getEventType() == MouseEvent.MOUSE_DRAGGED) {
+                canDrag = _ghostLabel != null && _ghostLabel.contains(_ghostLabel.sceneToLocal(_startSceneX, _startSceneY));
+            } else if (event.getEventType() == MouseEvent.MOUSE_DRAGGED && _label != null && canDrag) {
                 double posX = event.getSceneX();
                 double posY = event.getSceneY();
-                posX -= _startSceneX;
-                posY -= _startSceneY;
+                posX -= _ghostLabel.sceneToLocal(_startSceneX, _startSceneY).getX();
+                posY -= _ghostLabel.sceneToLocal(_startSceneX, _startSceneY).getY() + magicHeight;
                 _label.setTranslateX(posX);
                 _label.setTranslateY(posY);
+                //findClosestNodeTree(_label.getTranslateX());
                 previousMouse = event.getEventType();
             } else if (event.getEventType() == MouseEvent.MOUSE_RELEASED) {
                 if(previousMouse == MouseEvent.MOUSE_PRESSED)
                 {
-                    if(_label != null) {
-                        ((Region) _label).setBorder(Expression.NO_BORDER);
-                    }
-                    _root = _root.getChildByPos(_startSceneX, _startSceneY);
-                    if(_root != null) {
-                        System.out.println(_root.getContents());
-                        _label = _root.getNode();
-                        ((Region) _label).setBorder(Expression.RED_BORDER);
-                    }
-                    else {
-                        _root = _topRoot;
+                    _startSceneX = event.getSceneX();
+                    _startSceneY = event.getSceneY();
+                    mouseClicked();
+                    if(_ghostLabel != null) {
+                        Bounds local = _ghostLabel.localToScene(_ghostLabel.getBoundsInLocal());
+                        _label.setTranslateX(local.getMinX());
+                        _label.setTranslateY(local.getMinY() - magicHeight);
+                        _label.setBorder(Expression.RED_BORDER);
+                        generateOptions();
                     }
                 }
-                else {
-                    _label.setLayoutX(_label.getLayoutX() + _label.getTranslateX());
-                    _label.setLayoutY(_label.getLayoutY() + _label.getTranslateY());
+                else if(_label != null){
+                    _root = _topRoot;
+                    _ghostLabel.setOpacity(1.0f);
+                    _label.setBorder(Expression.NO_BORDER);
+                    _label.setText("");
                     _label.setTranslateX(0);
                     _label.setTranslateY(0);
                     previousMouse = event.getEventType();
@@ -79,6 +88,37 @@ public class ExpressionEditor extends Application {
             }
         }
     }
+
+    /*
+     * TODO: Write JavaDocs
+     */
+    private static void mouseClicked() {
+        if(_ghostLabel != null) {
+            _ghostLabel.setOpacity(1.0f);
+            _ghostLabel = null;
+        }
+        _root = _root.getChildByPos(_startSceneX, _startSceneY);
+        if(_root != null) {
+            _ghostLabel = _root.getNode();
+            _label.setText(_root.expToText());
+            HBox parent = (HBox) _root.getNode().getParent();
+            parent.getChildren().set(parent.getChildren().indexOf(_root.getNode()), _ghostLabel);
+            _ghostLabel.setOpacity(0.5f);
+        }
+        else {
+            _root = _topRoot;
+        }
+    }
+
+    private static void generateOptions() {
+        for (int i = 0; i <_root.getParent().getSubexpressions().size(); i++) {
+            CompoundExpression tempNode = _root.getParent().deepCopy();
+            Collections.swap(tempNode.getSubexpressions(), _root.getParent().getSubexpressions().indexOf(_root), i);
+            System.out.println(tempNode.convertToString(0));
+            _nodes.add(tempNode);
+        }
+    }
+
 
     /**
      * Size of the GUI

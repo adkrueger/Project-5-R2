@@ -10,9 +10,13 @@ class ParenExpression extends CompoundExpressionImpl {
         super(contents);
     }
 
-    void createHBox() {
+    CompoundExpression deepCopyHelper() {
+        return new ParenExpression(getContents());
+    }
+
+    public void createHBox() {
         hbox.getChildren().add(new Label("("));
-        for(Expression expression : getExpressions())
+        for(Expression expression : getSubexpressions())
         {
             hbox.getChildren().add(expression.getNode());
         }

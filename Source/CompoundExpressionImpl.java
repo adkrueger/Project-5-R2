@@ -8,7 +8,7 @@ import java.util.List;
 abstract class CompoundExpressionImpl extends SimpleExpressionImpl implements CompoundExpression {
 
     private List<Expression> _expressions = new ArrayList<>();
-    final HBox hbox = new HBox();
+    HBox hbox = new HBox();
 
     /**
      * The constructor for the CompoundExpressionImpl
@@ -18,16 +18,6 @@ abstract class CompoundExpressionImpl extends SimpleExpressionImpl implements Co
     CompoundExpressionImpl(String contents) {
         super(contents);
     }
-
-    /**
-     * Returns the list of expressions
-     *
-     * @return the list of expressions
-     */
-    List<Expression> getExpressions() {
-        return _expressions;
-    }
-
 
     /**
      * Adds the specified expression as a child.
@@ -44,7 +34,7 @@ abstract class CompoundExpressionImpl extends SimpleExpressionImpl implements Co
      *
      * @return the list of expressions
      */
-    private List<Expression> getSubexpressions() {
+    public List<Expression> getSubexpressions() {
         return _expressions;
     }
 
@@ -55,8 +45,42 @@ abstract class CompoundExpressionImpl extends SimpleExpressionImpl implements Co
      *
      * @return the deep copy
      */
-    public Expression deepCopy() {
-        return null;
+    public CompoundExpression deepCopy() {
+        CompoundExpression copy = deepCopyHelper();
+        for(Expression subExp : _expressions) {
+            copy.addSubexpression(subExp);
+        }
+        copy.setNode(getNode());
+        return copy;
+    }
+
+    abstract CompoundExpression deepCopyHelper();
+
+    public String expToText(){
+        StringBuilder string = new StringBuilder();
+        for (Node node : hbox.getChildren())
+        {
+            if (node instanceof Label) {
+                string.append(((Label) node).getText());
+            }
+            else {
+                string.append(nodeToText((HBox) node));
+            }
+        }
+        return string.toString();
+    }
+
+    private String nodeToText(HBox nodes) {
+        StringBuilder string = new StringBuilder();
+        for (Node node : nodes.getChildren()) {
+            if(node instanceof Label) {
+                string.append(((Label) node).getText());
+            }
+            else if(node instanceof HBox){
+                string.append(nodeToText((HBox) node));
+            }
+        }
+        return string.toString();
     }
 
     /**
@@ -64,6 +88,10 @@ abstract class CompoundExpressionImpl extends SimpleExpressionImpl implements Co
      */
     public Node getNode() {
         return hbox;
+    }
+
+    public void setNode(Node node) {
+        hbox = (HBox) node;
     }
 
     /**
@@ -74,24 +102,37 @@ abstract class CompoundExpressionImpl extends SimpleExpressionImpl implements Co
      * c itself will be removed. This method modifies the expression itself.
      */
     public void flatten() {
-        List<Expression> expressions = new ArrayList<>();
-        for (Expression expression : _expressions) {
-            expression.flatten();
-            if (isMultOrAdd(expression)) {
-                expressions.addAll(((CompoundExpressionImpl) expression).getSubexpressions());
-            } else {
-                expressions.add(expression);
+        flattenChildren();
+        List<Expression> children = new ArrayList<>();
+
+        for(Expression e : this.getSubexpressions()) {
+            if(e.getClass() == getClass() && !(e instanceof ParenExpression)) {
+                CompoundExpression tempE = (CompoundExpression) e;
+                children.addAll(tempE.getSubexpressions());
+            }
+            else {
+                children.add(e);
             }
         }
-        _expressions = expressions;
+        _expressions.clear();
+        for(Expression exp : children) {
+            addSubexpression(exp);
+        }
         createHBox();
     }
 
-    abstract void createHBox(); // Must be implemented by other classes
+    private void flattenChildren() {
+        for(Expression c : _expressions) {
+            // If the child is a SimpleExpression, nothing will happen
+            c.flatten();
+        }
+    }
+
+    abstract void createHBox();
 
     void hBoxHelper(String str) {
-        int i = getExpressions().size();
-        for(Expression expression : getExpressions())
+        int i = getSubexpressions().size();
+        for(Expression expression : getSubexpressions())
         {
             hbox.getChildren().add(expression.getNode());
             i--;
@@ -99,20 +140,6 @@ abstract class CompoundExpressionImpl extends SimpleExpressionImpl implements Co
                 hbox.getChildren().add(new Label(str));
             }
         }
-    }
-
-
-    /**
-     * Checks whether a expression is * or + and matches the
-     * current Expression contents
-     *
-     * @param expression the given expression to be checked
-     * @return true if matches the contents and + or *,
-     * false if not
-     */
-    private boolean isMultOrAdd(Expression expression) {
-        return expression.getContents().equals(this.getContents()) &&
-                (expression instanceof AdditionExpression || expression instanceof MultiplicationExpression);
     }
 
     /**

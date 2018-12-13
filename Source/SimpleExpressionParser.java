@@ -48,7 +48,7 @@ public class SimpleExpressionParser implements ExpressionParser {
             Expression m1Exp = m1.apply(str.substring(0, i));
             Expression m2Exp = m2.apply(str.substring(i + 1));
             if (str.charAt(i) == op && m1Exp != null && m2Exp != null) {
-                CompoundExpressionImpl opExpr = null;
+                CompoundExpression opExpr = null;
                 if (op == '+') {
                     opExpr = new AdditionExpression("+");
                 }

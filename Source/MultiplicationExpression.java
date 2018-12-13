@@ -8,7 +8,11 @@ class MultiplicationExpression extends CompoundExpressionImpl {
         super(contents);
     }
 
-    void createHBox() {
+    CompoundExpression deepCopyHelper() {
+        return new MultiplicationExpression(getContents());
+    }
+
+    public void createHBox() {
         hBoxHelper(getContents());
     }
 }

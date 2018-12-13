@@ -1,6 +1,7 @@
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.Node;
+import java.util.ArrayList;
 
 interface Expression {
 	/**
@@ -8,6 +9,11 @@ interface Expression {
 	 */
     Border RED_BORDER = new Border(
 	  new BorderStroke(Color.RED, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)
+	);
+
+    // TODO: Remove this after testing
+	Border BLUE_BORDER = new Border(
+			new BorderStroke(Color.BLUE, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)
 	);
 
 	/**
@@ -48,6 +54,11 @@ interface Expression {
 	Node getNode ();
 
 	/**
+	 * TODO: FIX
+	 */
+	void setNode (Node node);
+
+	/**
 	 * Recursively flattens the expression as much as possible
 	 * throughout the entire tree. Specifically, in every multiplicative
 	 * or additive expression x whose first or last
@@ -84,4 +95,7 @@ interface Expression {
 	 * @return the expression's content
 	 */
 	String getContents();
+
+	// TODO: ADD THIS
+	String expToText();
 }
