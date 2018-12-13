@@ -1,4 +1,6 @@
 import javafx.application.Application;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.geometry.Bounds;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
@@ -19,7 +21,7 @@ public class ExpressionEditor extends Application {
 
     private static Expression _topRoot;
     private static Expression _root;
-    private static ArrayList<Expression> _nodes = new ArrayList<>();
+    private static ArrayList<Integer> intToPlace = new ArrayList<>();
     private static ArrayList<Double> closeValues = new ArrayList<>();
     private static Label _label;
     private static Node _ghostLabel;
@@ -55,11 +57,13 @@ public class ExpressionEditor extends Application {
             } else if (event.getEventType() == MouseEvent.MOUSE_DRAGGED && _label != null && canDrag) {
                 double posX = event.getSceneX();
                 double posY = event.getSceneY();
-                posX -= _ghostLabel.sceneToLocal(_startSceneX, _startSceneY).getX();
+                //posX -= _ghostLabel.sceneToLocal(_startSceneX, _startSceneY).getX();
                 posY -= _ghostLabel.sceneToLocal(_startSceneX, _startSceneY).getY() + _ghostLabel.getLayoutBounds().getHeight() * 1.5;
                 _label.setTranslateX(posX);
                 _label.setTranslateY(posY);
-                findClosestNodeTree(_label.getTranslateX());
+                ObservableList<Node> workingCollection = FXCollections.observableArrayList(((HBox) _ghostLabel.getParent()).getChildren());
+                Collections.swap(workingCollection, findClosestNodeTree(_label.getTranslateX()), workingCollection.indexOf(_ghostLabel));
+                ((HBox) _ghostLabel.getParent()).getChildren().setAll(workingCollection);
                 previousMouse = event.getEventType();
             } else if (event.getEventType() == MouseEvent.MOUSE_RELEASED) {
                 if(previousMouse == MouseEvent.MOUSE_PRESSED) {
@@ -83,8 +87,16 @@ public class ExpressionEditor extends Application {
         }
     }
 
-    private static void findClosestNodeTree(double posX) {
-
+    private static Integer findClosestNodeTree(double posX) {
+        double _closestDistance = Math.abs(closeValues.get(0) - _label.getTranslateX());
+        int index = 0;
+        for (int i = 1; i < intToPlace.size(); i++) {
+            if(_closestDistance > Math.abs(closeValues.get(i) - _label.getTranslateX())) {
+                _closestDistance = Math.abs(closeValues.get(i) - _label.getTranslateX());
+                index = i;
+            }
+        }
+        return intToPlace.get(index);
     }
 
     /*
@@ -117,11 +129,23 @@ public class ExpressionEditor extends Application {
     }
 
     private static void generateOptions() {
-        for (int i = 0; i <_root.getParent().getSubexpressions().size(); i++) {
-            CompoundExpression tempNode = _root.getParent().deepCopy();
-            Collections.swap(tempNode.getSubexpressions(), _root.getParent().getSubexpressions().indexOf(_root), i);
-            System.out.println(tempNode.convertToString(0));
-            _nodes.add(tempNode);
+        closeValues.clear();
+        intToPlace.clear();
+        int i = 0;
+        for (Node node : ((HBox) _root.getNode().getParent()).getChildren()) {
+            if(node instanceof Label) {
+                if(((Label) node).getText().matches("[a-z]|[0-9]+")) {
+                    Bounds local = node.localToScene(node.getBoundsInLocal());
+                    closeValues.add(local.getMinX());
+                    intToPlace.add(i);
+                }
+            }
+            else {
+                Bounds local = node.localToScene(node.getBoundsInLocal());
+                closeValues.add(local.getMinX());
+                intToPlace.add(i);
+            }
+            i++;
         }
     }
 
