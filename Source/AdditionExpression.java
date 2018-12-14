@@ -1,5 +1,3 @@
-import javafx.scene.layout.HBox;
-
 class AdditionExpression extends CompoundExpressionImpl {
 
     /**
@@ -11,10 +9,18 @@ class AdditionExpression extends CompoundExpressionImpl {
         super(contents);
     }
 
+    /**
+     * Helper method that returns new Object of this type
+     *
+     * @return new Object of type AdditionExpression
+     */
     CompoundExpression deepCopyHelper() {
         return new AdditionExpression(getContents());
     }
 
+    /**
+     * Method to create the HBox
+     */
     public void createHBox() {
         easyMake();
     }

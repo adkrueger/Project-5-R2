@@ -1,6 +1,5 @@
 import javafx.scene.Node;
 import javafx.scene.control.Label;
-import javafx.scene.layout.HBox;
 import javafx.scene.text.Font;
 
 public class SimpleExpressionImpl implements Expression {
@@ -47,19 +46,20 @@ public class SimpleExpressionImpl implements Expression {
         return _contents;
     }
 
-    public String expToText() {
-        return getContents();
-    }
-
-    public String nodeToText(HBox hbox) {
-        return getContents();
-    }
-
+    /**
+     * Sets the Node as a given opacity
+     *
+     * @param db the opacity, between 0 and 1
+     */
     public void setOpacity(Double db) {
         opacity = db;
     }
 
-    @Override
+    /**
+     * Returns the opacity of the Node
+     *
+     * @return the opacity of the Node
+     */
     public Double getOpacity() {
         return opacity;
     }
@@ -77,7 +77,7 @@ public class SimpleExpressionImpl implements Expression {
         label.setText(_contents);
         label.setFont(Font.font("Times", ExpressionEditor.FONT_SIZE));
         label.setOpacity(getOpacity());
-        if(getOpacity() < 1) {
+        if (getOpacity() < 1) {
             label.setBorder(Expression.RED_BORDER);
         }
         temp.setNode(label);
@@ -94,9 +94,9 @@ public class SimpleExpressionImpl implements Expression {
     }
 
     /**
-     * TODO: FIX
+     * Sets the Node as the given Node
      *
-     * @param node the node
+     * @param node the given Node
      */
     public void setNode(Node node) {
         label = (Label) node;
@@ -108,13 +108,24 @@ public class SimpleExpressionImpl implements Expression {
      * or additive expression x whose first or last
      * child c is of the same type as x, the children of c will be added to x, and
      * c itself will be removed. This method modifies the expression itself.
+     * <p>
+     * Not required to be called because the expression is a Literal and
+     * doesn't need to be flattened.
      */
     public void flatten() {
-
     }
 
+    /**
+     * Gets the child of an expression given a
+     * certain (x,y) coordinate
+     *
+     * @param x the x coordinate of the query
+     * @param y the y coordinate of the query
+     * @return the expression in the x,y position or
+     * null if nothing is found
+     */
     public Expression getChildByPos(double x, double y) {
-        if(label.contains(label.parentToLocal(x, y))) {
+        if (label.contains(label.parentToLocal(x, y))) {
             label.setBorder(RED_BORDER);
             return this;
         } else {

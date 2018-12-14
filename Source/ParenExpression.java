@@ -12,21 +12,28 @@ class ParenExpression extends CompoundExpressionImpl {
         super(contents);
     }
 
+    /**
+     * Helper method that returns new Object of this type
+     *
+     * @return new Object of type ParenExpression
+     */
     CompoundExpression deepCopyHelper() {
         return new ParenExpression(getContents());
     }
 
+    /**
+     * Method to create the HBox
+     */
     public void createHBox() {
         hbox = new HBox();
         hbox.setOpacity(getOpacity());
-        if(getOpacity() < 1) {
+        if (getOpacity() < 1) {
             hbox.setBorder(Expression.RED_BORDER);
         }
         Label label = new Label("(");
         label.setFont(Font.font("Times", ExpressionEditor.FONT_SIZE));
         hbox.getChildren().add(label);
-        for(Expression expression : getSubexpressions())
-        {
+        for (Expression expression : getSubexpressions()) {
             hbox.getChildren().add(expression.getNode());
         }
         Label label2 = new Label(")");

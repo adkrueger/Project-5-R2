@@ -1,6 +1,4 @@
 import javafx.application.Application;
-import javafx.collections.FXCollections;
-import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.event.EventHandler;
 import javafx.event.EventType;
@@ -32,6 +30,11 @@ public class ExpressionEditor extends Application {
     private static boolean canDrag = false;
     private static HashMap<Double, CompoundExpression> list = new HashMap<>();
 
+    /**
+     * Launches the GUI
+     *
+     * @param args arguments to pass to launch
+     */
     public static void main(String[] args) {
         launch(args);
     }
@@ -46,6 +49,11 @@ public class ExpressionEditor extends Application {
             _pane = pane;
         }
 
+        /**
+         * The event handler
+         *
+         * @param event the event to be handled
+         */
         public void handle(MouseEvent event) {
             if (event.getEventType() == MouseEvent.MOUSE_PRESSED) {
                 _startSceneX = event.getSceneX();
@@ -63,10 +71,10 @@ public class ExpressionEditor extends Application {
 
                 CompoundExpression top = _root.getParent();
 
-                if(top != null) {
+                if (top != null) {
                     top.getSubexpressions().clear();
                     Expression e = getClosest();
-                    if(e.getContents().equals("()")) {
+                    if (e.getContents().equals("()")) {
                         e = ((CompoundExpression) e).getSubexpressions().get(0);
                     }
                     top.getSubexpressions().add(e);
@@ -77,11 +85,11 @@ public class ExpressionEditor extends Application {
                 _previousMouse = event.getEventType();
 
             } else if (event.getEventType() == MouseEvent.MOUSE_RELEASED) {
-                if(_previousMouse == MouseEvent.MOUSE_PRESSED) {
+                if (_previousMouse == MouseEvent.MOUSE_PRESSED) {
                     mouseClicked(event.getSceneX(), event.getSceneY());
-                }
-                else {
-                    if(_label != null){
+                } else {
+                    if (_label != null) {
+                        _ghostLabel = null;
                         _pane.getChildren().remove(_label);
                         resetOpacity(_copyTop);
                         _root = _copyTop;
@@ -92,10 +100,16 @@ public class ExpressionEditor extends Application {
             }
         }
 
+        /**
+         * Updates the Expression on the screen
+         *
+         * @param pane    the Pane containing the Expression
+         * @param topRoot the topmost expression
+         */
         private static void update(Pane pane, Expression topRoot) {
             pane.getChildren().clear();
             pane.getChildren().add(topRoot.getNode());
-            if(_label != null) {
+            if (_label != null) {
                 pane.getChildren().add(_label);
             }
             topRoot.getNode().setLayoutX(WINDOW_WIDTH / 4.0);
@@ -103,27 +117,36 @@ public class ExpressionEditor extends Application {
         }
     }
 
+    /**
+     * Resets the opacity and border for the finished Node
+     *
+     * @param exp the given Node
+     */
     private static void resetOpacity(Expression exp) {
-        if(exp instanceof CompoundExpression) {
-            for(Expression e : ((CompoundExpression) exp).getSubexpressions()) {
+        if (exp instanceof CompoundExpression) {
+            for (Expression e : ((CompoundExpression) exp).getSubexpressions()) {
                 e.getNode().setOpacity(1.0f);
                 ((Region) e.getNode()).setBorder(Expression.NO_BORDER);
                 e.setOpacity(1.0);
                 resetOpacity(e);
             }
-        }
-        else {
+        } else {
             ((Region) exp.getNode()).setBorder(Expression.NO_BORDER);
             exp.getNode().setOpacity(1.0f);
             exp.setOpacity(1.0);
         }
     }
 
+    /**
+     * Returns the closest Expression to the selected Expression
+     *
+     * @return the closest Expression to the selected Expression
+     */
     private static CompoundExpression getClosest() {
         double bestDistance = -1.0;
         double currentBest = -1.0;
-        for(Double dist : list.keySet()) {
-            if(bestDistance == -1.0 || bestDistance > Math.abs(_label.getTranslateX() - dist)) {
+        for (Double dist : list.keySet()) {
+            if (bestDistance == -1.0 || bestDistance > Math.abs(_label.getTranslateX() - dist)) {
                 bestDistance = Math.abs(_label.getTranslateX() - dist);
                 currentBest = dist;
             }
@@ -131,18 +154,21 @@ public class ExpressionEditor extends Application {
         return list.get(currentBest);
     }
 
-    /*
-     * TODO: Write JavaDocs
+    /**
+     * Checks if the mouse is clicked and changes focus appropriately
+     *
+     * @param sceneX the x position of the click
+     * @param sceneY the y position of the click
      */
     private static void mouseClicked(double sceneX, double sceneY) {
         _pane.getChildren().remove(_label);
         _startSceneX = sceneX;
         _startSceneY = sceneY;
         _root = _root.getChildByPos(_startSceneX, _startSceneY);
-        if(_ghostLabel != null) {
+        if (_ghostLabel != null) {
             ((Region) _ghostLabel).setBorder(Expression.NO_BORDER);
         }
-        if(_root != null) {
+        if (_root != null) {
             _ghostLabel = _root.getNode();
             ((Region) _ghostLabel).setBorder(Expression.RED_BORDER);
             Expression e = _root.deepCopy();
@@ -152,12 +178,15 @@ public class ExpressionEditor extends Application {
             _label.setTranslateX(_ghostLabel.localToScene(_ghostLabel.getBoundsInLocal()).getMinX());
             _label.setTranslateY(_ghostLabel.localToScene(_ghostLabel.getBoundsInLocal()).getMinY());
             makeClosest();
-        }
-        else {
+        } else {
             _root = _topRoot;
         }
     }
 
+    /**
+     * Makes a list of all possible expressions when the
+     * current Expression has been focused
+     */
     private static void makeClosest() {
         list.clear();
         int i = 0;
@@ -173,6 +202,9 @@ public class ExpressionEditor extends Application {
         }
     }
 
+    /**
+     * The size of the font
+     */
     static final int FONT_SIZE = 36;
 
     /**
@@ -190,6 +222,11 @@ public class ExpressionEditor extends Application {
      */
     private final ExpressionParser expressionParser = new SimpleExpressionParser();
 
+    /**
+     * Starts the GUI
+     *
+     * @param primaryStage the stage to view
+     */
     @Override
     public void start(Stage primaryStage) {
         primaryStage.setTitle("Expression Editor");

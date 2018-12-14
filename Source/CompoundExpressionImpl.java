@@ -19,6 +19,7 @@ abstract class CompoundExpressionImpl extends SimpleExpressionImpl implements Co
     CompoundExpressionImpl(String contents) {
         super(contents);
     }
+
     /**
      * Adds the specified expression as a child.
      *
@@ -43,27 +44,37 @@ abstract class CompoundExpressionImpl extends SimpleExpressionImpl implements Co
      * The entire tree rooted at the target node is copied, i.e.,
      * the copied Expression is as deep as possible.
      *
-     * @return the deep copy
+     * @return the copied expression
      */
     public CompoundExpression deepCopy() {
         CompoundExpression copy = deepCopyHelper();
-        for(Expression subExp : _expressions) {
+
+        for (Expression subExp : _expressions) {
             Expression copyMini = subExp.deepCopy();
-            copyMini.setOpacity(subExp.getOpacity());
-            copyMini.flatten();
-            copy.addSubexpression(copyMini);
+            copyMini.setOpacity(subExp.getOpacity());     //
+            copyMini.flatten();                           // formats the copy appropriately
+            copy.addSubexpression(copyMini);              //
         }
+
         copy.setOpacity(getOpacity());
         copy.flatten();
         return copy;
     }
 
+    /**
+     * Helper method that returns new Object of this type
+     *
+     * @return new Object of type Expression
+     */
     abstract CompoundExpression deepCopyHelper();
 
+    /**
+     * Creates an HBox
+     */
     void easyMake() {
         hbox = new HBox();
         hbox.setOpacity(getOpacity());
-        if(getOpacity() < 1) {
+        if (getOpacity() < 1) {
             hbox.setBorder(Expression.RED_BORDER);
         }
         hBoxHelper(getContents());
@@ -76,6 +87,13 @@ abstract class CompoundExpressionImpl extends SimpleExpressionImpl implements Co
         return hbox;
     }
 
+    /**
+     * Sets the given Node as the Node in the parameter
+     * (assumes given node is an HBox so that casting will
+     * operate properly)
+     *
+     * @param node the node
+     */
     public void setNode(Node node) {
         hbox = (HBox) node;
     }
@@ -91,38 +109,51 @@ abstract class CompoundExpressionImpl extends SimpleExpressionImpl implements Co
         flattenChildren();
         List<Expression> children = new ArrayList<>();
 
-        for(Expression e : this.getSubexpressions()) {
-            if(e.getClass() == getClass() && !(e instanceof ParenExpression)) {
+        for (Expression e : this.getSubexpressions()) {
+            if (e.getClass() == getClass() && !(e instanceof ParenExpression)) {
                 CompoundExpression tempE = (CompoundExpression) e;
                 children.addAll(tempE.getSubexpressions());
-            }
-            else {
+            } else {
                 children.add(e);
             }
         }
+
         _expressions.clear();
-        for(Expression exp : children) {
+        for (Expression exp : children) {
             addSubexpression(exp);
         }
+
         createHBox();
     }
 
+    /**
+     * Flattens all children in the given expression
+     */
     private void flattenChildren() {
-        for(Expression c : _expressions) {
+        for (Expression c : _expressions) {
             // If the child is a SimpleExpression, nothing will happen
             c.flatten();
         }
     }
 
+    /**
+     * Creates an HBox
+     */
     abstract void createHBox();
 
-    void hBoxHelper(String str) {
+    /**
+     * Adds in alternating order the Expression then str and so on,
+     * ending with an Expression.
+     *
+     * @param str the expression in String form (i.e. "+")
+     */
+    private void hBoxHelper(String str) {
         int i = getSubexpressions().size();
-        for(Expression expression : getSubexpressions())
-        {
+
+        for (Expression expression : getSubexpressions()) {
             hbox.getChildren().add(expression.getNode());
             i--;
-            if(i > 0) {
+            if (i > 0) {
                 Label label = new Label(str);
                 label.setFont(Font.font("Times", ExpressionEditor.FONT_SIZE));
                 hbox.getChildren().add(label);
@@ -168,10 +199,19 @@ abstract class CompoundExpressionImpl extends SimpleExpressionImpl implements Co
         }
     }
 
+    /**
+     * Gets the child of an expression given a
+     * certain (x,y) coordinate
+     *
+     * @param x the x coordinate of the query
+     * @param y the y coordinate of the query
+     * @return the expression in the x,y position or
+     * null if nothing is found
+     */
     public Expression getChildByPos(double x, double y) {
-        for(Expression expression : _expressions) {
+        for (Expression expression : _expressions) {
             Node label = expression.getNode();
-            if(label.contains(label.sceneToLocal(x, y))) {
+            if (label.contains(label.sceneToLocal(x, y))) {
                 System.out.println("found");
                 return expression;
             }
