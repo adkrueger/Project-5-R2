@@ -1,4 +1,6 @@
 import javafx.scene.control.Label;
+import javafx.scene.layout.HBox;
+import javafx.scene.text.Font;
 
 class ParenExpression extends CompoundExpressionImpl {
     /**
@@ -15,11 +17,20 @@ class ParenExpression extends CompoundExpressionImpl {
     }
 
     public void createHBox() {
-        hbox.getChildren().add(new Label("("));
+        hbox = new HBox();
+        hbox.setOpacity(getOpacity());
+        if(getOpacity() < 1) {
+            hbox.setBorder(Expression.RED_BORDER);
+        }
+        Label label = new Label("(");
+        label.setFont(Font.font("Times", ExpressionEditor.FONT_SIZE));
+        hbox.getChildren().add(label);
         for(Expression expression : getSubexpressions())
         {
             hbox.getChildren().add(expression.getNode());
         }
-        hbox.getChildren().add(new Label(")"));
+        Label label2 = new Label(")");
+        label2.setFont(Font.font("Times", ExpressionEditor.FONT_SIZE));
+        hbox.getChildren().add(label2);
     }
 }

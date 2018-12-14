@@ -1,3 +1,5 @@
+import javafx.scene.layout.HBox;
+
 class MultiplicationExpression extends CompoundExpressionImpl {
     /**
      * The constructor for the CompoundExpressionImpl
@@ -13,6 +15,6 @@ class MultiplicationExpression extends CompoundExpressionImpl {
     }
 
     public void createHBox() {
-        hBoxHelper(getContents());
+        easyMake();
     }
 }

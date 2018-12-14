@@ -1,14 +1,15 @@
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
+import javafx.scene.text.Font;
 
 import java.util.ArrayList;
 import java.util.List;
 
 abstract class CompoundExpressionImpl extends SimpleExpressionImpl implements CompoundExpression {
 
-    private List<Expression> _expressions = new ArrayList<>();
-    HBox hbox = new HBox();
+    private ArrayList<Expression> _expressions = new ArrayList<>();
+    HBox hbox;
 
     /**
      * The constructor for the CompoundExpressionImpl
@@ -18,7 +19,6 @@ abstract class CompoundExpressionImpl extends SimpleExpressionImpl implements Co
     CompoundExpressionImpl(String contents) {
         super(contents);
     }
-
     /**
      * Adds the specified expression as a child.
      *
@@ -34,7 +34,7 @@ abstract class CompoundExpressionImpl extends SimpleExpressionImpl implements Co
      *
      * @return the list of expressions
      */
-    public List<Expression> getSubexpressions() {
+    public ArrayList<Expression> getSubexpressions() {
         return _expressions;
     }
 
@@ -48,39 +48,25 @@ abstract class CompoundExpressionImpl extends SimpleExpressionImpl implements Co
     public CompoundExpression deepCopy() {
         CompoundExpression copy = deepCopyHelper();
         for(Expression subExp : _expressions) {
-            copy.addSubexpression(subExp);
+            Expression copyMini = subExp.deepCopy();
+            copyMini.setOpacity(subExp.getOpacity());
+            copyMini.flatten();
+            copy.addSubexpression(copyMini);
         }
-        copy.setNode(getNode());
+        copy.setOpacity(getOpacity());
+        copy.flatten();
         return copy;
     }
 
     abstract CompoundExpression deepCopyHelper();
 
-    public String expToText(){
-        StringBuilder string = new StringBuilder();
-        for (Node node : hbox.getChildren())
-        {
-            if (node instanceof Label) {
-                string.append(((Label) node).getText());
-            }
-            else {
-                string.append(nodeToText((HBox) node));
-            }
+    void easyMake() {
+        hbox = new HBox();
+        hbox.setOpacity(getOpacity());
+        if(getOpacity() < 1) {
+            hbox.setBorder(Expression.RED_BORDER);
         }
-        return string.toString();
-    }
-
-    private String nodeToText(HBox nodes) {
-        StringBuilder string = new StringBuilder();
-        for (Node node : nodes.getChildren()) {
-            if(node instanceof Label) {
-                string.append(((Label) node).getText());
-            }
-            else if(node instanceof HBox){
-                string.append(nodeToText((HBox) node));
-            }
-        }
-        return string.toString();
+        hBoxHelper(getContents());
     }
 
     /**
@@ -137,7 +123,9 @@ abstract class CompoundExpressionImpl extends SimpleExpressionImpl implements Co
             hbox.getChildren().add(expression.getNode());
             i--;
             if(i > 0) {
-                hbox.getChildren().add(new Label(str));
+                Label label = new Label(str);
+                label.setFont(Font.font("Times", ExpressionEditor.FONT_SIZE));
+                hbox.getChildren().add(label);
             }
         }
     }

@@ -1,6 +1,4 @@
-import javafx.scene.layout.HBox;
-
-import java.util.List;
+import java.util.ArrayList;
 
 interface CompoundExpression extends Expression {
 	/**
@@ -14,8 +12,9 @@ interface CompoundExpression extends Expression {
 	 *
 	 * @return the list of expressions
 	 */
-	List<Expression> getSubexpressions();
+	ArrayList<Expression> getSubexpressions();
 
 	// TODO: Add this as well
 	CompoundExpression deepCopy();
+
 }

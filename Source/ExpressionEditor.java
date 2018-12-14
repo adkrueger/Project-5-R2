@@ -1,7 +1,5 @@
 import javafx.application.Application;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.geometry.Bounds;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.event.EventHandler;
@@ -10,27 +8,29 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.Region;
 import javafx.stage.Stage;
-import java.util.ArrayList;
-import java.util.Collections;
+
+import java.util.*;
 
 public class ExpressionEditor extends Application {
 
-    private static Expression _topRoot;
+    private static CompoundExpression _topRoot;
+    private static CompoundExpression _copyTop;
     private static Expression _root;
-    private static ArrayList<Integer> intToPlace = new ArrayList<>();
-    private static ArrayList<Double> closeValues = new ArrayList<>();
-    private static Label _label;
+    private static Node _label;
     private static Node _ghostLabel;
+    private static EventType _previousMouse;
     private static Pane _pane;
-    private static EventType previousMouse;
+
+    private static Pane expressionPane = new Pane();
 
     private static double _startSceneX = 0;
     private static double _startSceneY = 0;
     private static boolean canDrag = false;
+    private static HashMap<Double, CompoundExpression> list = new HashMap<>();
 
     public static void main(String[] args) {
         launch(args);
@@ -41,118 +41,144 @@ public class ExpressionEditor extends Application {
      */
     private static class MouseEventHandler implements EventHandler<MouseEvent> {
         MouseEventHandler(Pane pane, CompoundExpression rootExpression_) {
-            _pane = pane;
             _topRoot = rootExpression_;
             _root = rootExpression_;
-            _label = new Label("Ready to begin!");
-            _pane.getChildren().add(_label);
+            _pane = pane;
         }
 
         public void handle(MouseEvent event) {
             if (event.getEventType() == MouseEvent.MOUSE_PRESSED) {
                 _startSceneX = event.getSceneX();
                 _startSceneY = event.getSceneY();
-                previousMouse = event.getEventType();
+                _previousMouse = event.getEventType();
                 canDrag = _ghostLabel != null && _ghostLabel.contains(_ghostLabel.sceneToLocal(_startSceneX, _startSceneY));
             } else if (event.getEventType() == MouseEvent.MOUSE_DRAGGED && _label != null && canDrag) {
                 double posX = event.getSceneX();
                 double posY = event.getSceneY();
-                //posX -= _ghostLabel.sceneToLocal(_startSceneX, _startSceneY).getX();
-                posY -= _ghostLabel.sceneToLocal(_startSceneX, _startSceneY).getY() + _ghostLabel.getLayoutBounds().getHeight() * 1.5;
+                posX -= _ghostLabel.sceneToLocal(_startSceneX, _startSceneY).getX();
+                posY -= _ghostLabel.sceneToLocal(_startSceneX, _startSceneY).getY();
+
                 _label.setTranslateX(posX);
                 _label.setTranslateY(posY);
-                ObservableList<Node> workingCollection = FXCollections.observableArrayList(((HBox) _ghostLabel.getParent()).getChildren());
-                Collections.swap(workingCollection, findClosestNodeTree(_label.getTranslateX()), workingCollection.indexOf(_ghostLabel));
-                ((HBox) _ghostLabel.getParent()).getChildren().setAll(workingCollection);
-                previousMouse = event.getEventType();
+
+                CompoundExpression top = _root.getParent();
+
+                if(top != null) {
+                    top.getSubexpressions().clear();
+                    Expression e = getClosest();
+                    if(e.getContents().equals("()")) {
+                        e = ((CompoundExpression) e).getSubexpressions().get(0);
+                    }
+                    top.getSubexpressions().add(e);
+                }
+
+                _copyTop = _topRoot.deepCopy();
+                update(_pane, _copyTop);
+                _previousMouse = event.getEventType();
+
             } else if (event.getEventType() == MouseEvent.MOUSE_RELEASED) {
-                if(previousMouse == MouseEvent.MOUSE_PRESSED) {
-                    _startSceneX = event.getSceneX();
-                    _startSceneY = event.getSceneY();
-                    mouseClicked();
-                    if(_ghostLabel != null) {
-                        Bounds local = _ghostLabel.localToScene(_ghostLabel.getBoundsInLocal());
-                        _label.setTranslateX(local.getMinX());
-                        _label.setTranslateY(local.getMinY() - _ghostLabel.getLayoutBounds().getHeight() * 1.5);
-                        _label.setBorder(Expression.RED_BORDER);
-                        generateOptions();
+                if(_previousMouse == MouseEvent.MOUSE_PRESSED) {
+                    mouseClicked(event.getSceneX(), event.getSceneY());
+                }
+                else {
+                    if(_label != null){
+                        _pane.getChildren().remove(_label);
+                        resetOpacity(_copyTop);
+                        _root = _copyTop;
+                        _topRoot = _copyTop;
+                        System.out.println(_topRoot.convertToString(0));
                     }
                 }
-                else if(_label != null) {
-                    _root = _topRoot;
-                    cleanUp();
-                    previousMouse = event.getEventType();
-                }
             }
+        }
+
+        private static void update(Pane pane, Expression topRoot) {
+            pane.getChildren().clear();
+            pane.getChildren().add(topRoot.getNode());
+            if(_label != null) {
+                pane.getChildren().add(_label);
+            }
+            topRoot.getNode().setLayoutX(WINDOW_WIDTH / 4.0);
+            topRoot.getNode().setLayoutY(WINDOW_HEIGHT / 3.0);
         }
     }
 
-    private static Integer findClosestNodeTree(double posX) {
-        double _closestDistance = Math.abs(closeValues.get(0) - _label.getTranslateX());
-        int index = 0;
-        for (int i = 1; i < intToPlace.size(); i++) {
-            if(_closestDistance > Math.abs(closeValues.get(i) - _label.getTranslateX())) {
-                _closestDistance = Math.abs(closeValues.get(i) - _label.getTranslateX());
-                index = i;
+    private static void resetOpacity(Expression exp) {
+        if(exp instanceof CompoundExpression) {
+            for(Expression e : ((CompoundExpression) exp).getSubexpressions()) {
+                e.getNode().setOpacity(1.0f);
+                ((Region) e.getNode()).setBorder(Expression.NO_BORDER);
+                e.setOpacity(1.0);
+                resetOpacity(e);
             }
         }
-        return intToPlace.get(index);
+        else {
+            ((Region) exp.getNode()).setBorder(Expression.NO_BORDER);
+            exp.getNode().setOpacity(1.0f);
+            exp.setOpacity(1.0);
+        }
+    }
+
+    private static CompoundExpression getClosest() {
+        double bestDistance = -1.0;
+        double currentBest = -1.0;
+        for(Double dist : list.keySet()) {
+            if(bestDistance == -1.0 || bestDistance > Math.abs(_label.getTranslateX() - dist)) {
+                bestDistance = Math.abs(_label.getTranslateX() - dist);
+                currentBest = dist;
+            }
+        }
+        return list.get(currentBest);
     }
 
     /*
      * TODO: Write JavaDocs
      */
-    private static void mouseClicked() {
-        if(_ghostLabel != null) {
-            cleanUp();
-            _ghostLabel = null;
-        }
+    private static void mouseClicked(double sceneX, double sceneY) {
+        _pane.getChildren().remove(_label);
+        _startSceneX = sceneX;
+        _startSceneY = sceneY;
         _root = _root.getChildByPos(_startSceneX, _startSceneY);
+        if(_ghostLabel != null) {
+            ((Region) _ghostLabel).setBorder(Expression.NO_BORDER);
+        }
         if(_root != null) {
             _ghostLabel = _root.getNode();
-            _label.setText(_root.expToText());
-            HBox parent = (HBox) _root.getNode().getParent();
-            parent.getChildren().set(parent.getChildren().indexOf(_root.getNode()), _ghostLabel);
-            _ghostLabel.setOpacity(0.5f);
+            ((Region) _ghostLabel).setBorder(Expression.RED_BORDER);
+            Expression e = _root.deepCopy();
+            e.flatten();
+            _label = e.getNode();
+            _pane.getChildren().add(_label);
+            _label.setTranslateX(_ghostLabel.localToScene(_ghostLabel.getBoundsInLocal()).getMinX());
+            _label.setTranslateY(_ghostLabel.localToScene(_ghostLabel.getBoundsInLocal()).getMinY());
+            makeClosest();
         }
         else {
             _root = _topRoot;
         }
     }
 
-    private static void cleanUp() {
-        _ghostLabel.setOpacity(1.0f);
-        _label.setBorder(Expression.NO_BORDER);
-        _label.setText("");
-        _label.setTranslateX(0);
-        _label.setTranslateY(0);
-    }
-
-    private static void generateOptions() {
-        closeValues.clear();
-        intToPlace.clear();
+    private static void makeClosest() {
+        list.clear();
         int i = 0;
-        for (Node node : ((HBox) _root.getNode().getParent()).getChildren()) {
-            if(node instanceof Label) {
-                if(((Label) node).getText().matches("[a-z]|[0-9]+")) {
-                    Bounds local = node.localToScene(node.getBoundsInLocal());
-                    closeValues.add(local.getMinX());
-                    intToPlace.add(i);
-                }
-            }
-            else {
-                Bounds local = node.localToScene(node.getBoundsInLocal());
-                closeValues.add(local.getMinX());
-                intToPlace.add(i);
-            }
+        for (Expression exp : _root.getParent().getSubexpressions()) {
+            double distance = exp.getNode().localToScene(exp.getNode().getBoundsInLocal()).getMinX();
+            CompoundExpression top = _root.getParent().deepCopy();
+            top.getSubexpressions().remove(_root.getParent().getSubexpressions().indexOf(_root));
+            top.getSubexpressions().add(i, _root);
+            CompoundExpression fixed = top.deepCopy();
+            fixed.getSubexpressions().get(i).setOpacity(0.5);
+            list.put(distance, fixed);
             i++;
         }
     }
 
+    static final int FONT_SIZE = 36;
+
     /**
      * Size of the GUI
      */
-    private static final int WINDOW_WIDTH = 500, WINDOW_HEIGHT = 250;
+    private static final int WINDOW_WIDTH = 800, WINDOW_HEIGHT = 400;
 
     /**
      * Initial expression shown in the textbox
@@ -174,8 +200,6 @@ public class ExpressionEditor extends Application {
         final Button button = new Button("Parse");
         queryPane.getChildren().add(textField);
 
-        final Pane expressionPane = new Pane();
-
         // Add the callback to handle when the Parse button is pressed
         button.setOnMouseClicked(e -> {
             // Try to parse the expression
@@ -183,10 +207,8 @@ public class ExpressionEditor extends Application {
                 // Success! Add the expression's Node to the expressionPane
                 final Expression expression = expressionParser.parse(textField.getText(), true);
                 System.out.println(expression.convertToString(0));
-                expressionPane.getChildren().clear();
-                expressionPane.getChildren().add(expression.getNode());
-                expression.getNode().setLayoutX(WINDOW_WIDTH / 4.0);
-                expression.getNode().setLayoutY(WINDOW_HEIGHT / 2.0);
+                _label = null;
+                MouseEventHandler.update(expressionPane, expression);
 
                 // If the parsed expression is a CompoundExpression, then register some callbacks
                 if (expression instanceof CompoundExpression) {
@@ -205,12 +227,13 @@ public class ExpressionEditor extends Application {
 
         // Reset the color to black whenever the user presses a key
         textField.setOnKeyPressed(e -> textField.setStyle("-fx-text-fill: black"));
+        expressionPane.getChildren().add(queryPane);
 
-        final BorderPane root = new BorderPane();
-        root.setTop(queryPane);
-        root.setCenter(expressionPane);
+        final Pane pane = new Pane();
+        pane.getChildren().add(expressionPane);
+        pane.getChildren().add(queryPane);
 
-        primaryStage.setScene(new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT));
+        primaryStage.setScene(new Scene(pane, WINDOW_WIDTH, WINDOW_HEIGHT));
         primaryStage.show();
     }
 }

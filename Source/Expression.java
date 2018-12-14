@@ -98,4 +98,10 @@ interface Expression {
 
 	// TODO: ADD THIS
 	String expToText();
+
+	String nodeToText(HBox hbox);
+
+	void setOpacity(Double db);
+
+	Double getOpacity();
 }

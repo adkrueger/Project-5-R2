@@ -1,11 +1,14 @@
 import javafx.scene.Node;
 import javafx.scene.control.Label;
+import javafx.scene.layout.HBox;
+import javafx.scene.text.Font;
 
 public class SimpleExpressionImpl implements Expression {
 
     private String _contents;
     private Label label;
     private CompoundExpression _parent;
+    private double opacity = 1.0;
 
     /**
      * constructor that takes the contents of the expression
@@ -16,7 +19,7 @@ public class SimpleExpressionImpl implements Expression {
     SimpleExpressionImpl(String contents) {
         _contents = contents;
         label = new Label(contents);
-
+        label.setFont(Font.font("Times", ExpressionEditor.FONT_SIZE));
     }
 
     /**
@@ -48,6 +51,19 @@ public class SimpleExpressionImpl implements Expression {
         return getContents();
     }
 
+    public String nodeToText(HBox hbox) {
+        return getContents();
+    }
+
+    public void setOpacity(Double db) {
+        opacity = db;
+    }
+
+    @Override
+    public Double getOpacity() {
+        return opacity;
+    }
+
     /**
      * Creates and returns a deep copy of the expression.
      * The entire tree rooted at the target node is copied, i.e.,
@@ -56,7 +72,16 @@ public class SimpleExpressionImpl implements Expression {
      * @return the deep copy
      */
     public Expression deepCopy() {
-        return new SimpleExpressionImpl(_contents);
+        SimpleExpressionImpl temp = new SimpleExpressionImpl(_contents);
+        Label label = new Label();
+        label.setText(_contents);
+        label.setFont(Font.font("Times", ExpressionEditor.FONT_SIZE));
+        label.setOpacity(getOpacity());
+        if(getOpacity() < 1) {
+            label.setBorder(Expression.RED_BORDER);
+        }
+        temp.setNode(label);
+        return temp;
     }
 
     /**
@@ -84,7 +109,9 @@ public class SimpleExpressionImpl implements Expression {
      * child c is of the same type as x, the children of c will be added to x, and
      * c itself will be removed. This method modifies the expression itself.
      */
-    public void flatten() {}
+    public void flatten() {
+
+    }
 
     public Expression getChildByPos(double x, double y) {
         if(label.contains(label.parentToLocal(x, y))) {
